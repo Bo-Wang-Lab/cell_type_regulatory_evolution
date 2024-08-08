@@ -1,0 +1,42 @@
+## STARsolo input parameters
+
+GENOME_DIR= path/to/genome_index_dir
+READ_FILES_IN= path/to/*_R2.fastq.gz path/to/*_R1.fastq.gz
+SOLO_TYPE= CB_UMI_Simple
+SOLO_CB_WHITELIST= path/to/737K-arc-v1-RNA.txt
+SOLO_UMI_LEN= 12
+CLIP_ADAPTER_TYPE= CellRanger4
+OUT_FILTER_SCORE_MIN= 30
+SOLO_CB_MATCH_WL_TYPE= 1MM_multi_Nbase_pseudocounts
+SOLO_UMI_FILTERING= MultiGeneUMI_CR
+SOLO_UMI_DEDUP= 1MM_CR
+SOLO_CELL_FILTER= EmptyDrops_CR 10000 0.99 10 45000 90000 500 0.01 20000 0.01 10000
+SOLO_FEATURES= GeneFull
+SOLO_MULTI_MAPPERS= EM Uniform
+OUT_SAM_ATTRIBUTES= NH HI nM AS CR UR CB UB GX GN sS sQ sM
+OUT_SAM_TYPE= BAM SortedByCoordinate
+RUN_THREAD_N= 9
+OUT_FILTER_MULTIMAP_NMAX= 20
+READ_FILES_COMMAND= zcat
+OUT_FILE_NAME_PREFIX= path/to/output_folder/
+
+STAR --genomeDir $GENOME_DIR \
+     --readFilesIn $READ_FILES_IN \
+     --soloType $SOLO_TYPE \
+     --soloCBwhitelist $SOLO_CB_WHITELIST \
+     --soloUMIlen $SOLO_UMI_LEN \
+     --clipAdapterType $CLIP_ADAPTER_TYPE \
+     --outFilterScoreMin $OUT_FILTER_SCORE_MIN \
+     --soloCBmatchWLtype $SOLO_CB_MATCH_WL_TYPE \
+     --soloUMIfiltering $SOLO_UMI_FILTERING \
+     --soloUMIdedup $SOLO_UMI_DEDUP \
+     --soloCellFilter $SOLO_CELL_FILTER \
+     --soloFeatures $SOLO_FEATURES \
+     --soloMultiMappers $SOLO_MULTI_MAPPERS \
+     --outSAMattributes $OUT_SAM_ATTRIBUTES \
+     --outSAMtype $OUT_SAM_TYPE \
+     --runThreadN $RUN_THREAD_N \
+     --outFilterMultimapNmax $OUT_FILTER_MULTIMAP_NMAX \
+     --readFilesCommand $READ_FILES_COMMAND \
+     --outFileNamePrefix $OUT_FILE_NAME_PREFIX
+

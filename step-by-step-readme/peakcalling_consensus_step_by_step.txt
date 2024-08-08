@@ -1,0 +1,32 @@
+# Step by step read me for calling peaks using Encode DCC and generating consensus peak set using iterative_overlap_peaks.py 
+# We have provided example input.json file 
+# Github link: https://github.com/ENCODE-DCC/atac-seq-pipeline
+
+# Once the barcodes are in .txt file format for your clusters/annotation of choice, we used FilterCells from Signac pipeline to subset fragment files. 
+
+dir = '/path/to/.txt'
+
+for (file in list.files(dir)){
++ FilterCells('/path/to/fragmentfile', readLines(paste0(dir,file)), paste0(dir,sub(".txt",".tsv.gz",file)))}
+
+# To run Encode for each cluster/annotation, we create a folder for each as follows: 
+
+dir = '/path/to/subsetfragmentfiles'
+
+find dir/*.tsv.gz | parallel --colsep "\." mkdir {1}
+
+# We then make json file for each cluster/annotation within the same folder; input.json example will be provided in Peaks folder
+
+find dir/*.tsv.gz | parallel --colsep '\.' "cat input.json | sed -e 's#\".*\.tsv\.gz\"#\"{1}\.tsv\.gz\"#g' > {1}/input.json"
+
+# We then run Encode command line 
+
+find /path/to/*.tsv.gz | parallel -j2 --colsep '\.' "cd {1} && caper run $path/to/atac.wdl -i input.json --docker"
+
+# We then run metadata command line from Encode 
+find path/to/atac/*/metadata.json | parallel -j2 --colsep '/' "cd {1}/{2} && croo atac/{4}/metadata.json"
+
+# Once we finished calling peaks, we will generate consensus peak file using iterative_overlap_peaks.py as follows and generated consensus itoverlap_peaks.narrowPeak file across all cell types: 
+
+python3 iterative_overlap_peaks.py -i [either space separated list of narrowPeak file names, or a text file with the narrowPeak file names on each line, can be gzipped but must end with .gz if so] -c [which column to compare (by default 'score')] -t [how many threads to use] -e [space separated list of contigs to exclude] -o [output file name] -L [add this if providing a text file list instead of writing the files directly here]
+
