@@ -1,0 +1,26 @@
+# Parameters used in running Chromap 
+
+DROP_REPETITIVE_READS=10
+QUALITY_THRESHOLD=0
+INDEX_PATH= path/to/chromap_index
+THREADS= 8
+REFERENCE_PATH= /path/to/genome.fa.gz
+READ1_PATH= /path/to/*_R1.fastq.gz
+READ2_PATH= /path/to/*_R3.fastq.gz
+OUTPUT_PATH= /path/to/output/*.bed.gz
+BARCODE_PATH= /path/to/*_R2.fastq.gz
+BARCODE_WHITELIST= path/to/737K-cratac-v1_revcomp.txt
+
+chromap --preset atac \
+        --drop-repetitive-reads $DROP_REPETITIVE_READS \
+        -q $QUALITY_THRESHOLD \
+	--trim-adapters \ 
+        -x $INDEX_PATH \
+        -t $THREADS" \
+        -r $REFERENCE_PATH \
+        -1 $READ1_PATH \
+        -2 $READ2_PATH \
+        -o $OUTPUT_PATH \
+        -b $BARCODE_PATH \
+        --barcode-whitelist $BARCODE_WHITELIST
+

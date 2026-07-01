@@ -1,0 +1,21 @@
+## kallisto input parameters
+
+INDEX_PATH= Refs/Mlig_4_5.v5/kallisto/Mlig_4_5.kallisto.idx
+T2G_PATH= Refs/Mlig_4_5.v5/kallisto/Mlig_4_5.t2g.txt
+TECHNOLOGY= 10XV3
+THREADS= 8
+WHITELIST= Refs/737K-arc-v1.all.txt
+OUTPUT_DIR= path/to/output_folder/
+FASTQ1= path/to/*_R1.fastq.gz
+FASTQ2= path/to/*_R2.fastq.gz
+
+kb count -i $INDEX_PATH \
+         -g $T2G_PATH \
+         -x $TECHNOLOGY \
+         -t $THREADS \
+         -w $WHITELIST \
+         --h5ad \
+         -o $OUTPUT_DIR \
+         --overwrite \
+         $FASTQ1 \
+         $FASTQ2
